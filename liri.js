@@ -10,7 +10,6 @@ var input = process.argv;
 var action = input[2];
 var details = input[3];
 
-console.log(details)
 
 switch (action) {
 	case "concert-this":
@@ -30,15 +29,41 @@ switch (action) {
 	break;
 };
 
+
+function bands(details) {
+
+	var bandUrl = "https://rest.bandsintown.com/artists/" + details + "/events?app_id=codingbootcamp"
+
+	request(bandUrl, function(error, response, body) {
+		if (!details){
+			details = "Kanye West"
+    	}
+		if (!error && response.statusCode === 200) {
+
+
+			var concerts = JSON.parse(body)
+			console.log(concerts[0].venue)
+
+
+			// console.log(JSON.parse(body[0].venue.city))
+            // console.log(JSON.parse(body[0].venue.region))
+            // console.log(JSON.parse(body[0].venue.country))
+
+		}
+	});
+
+ 
+    };
+
 function spotify(details) {
     var spotify = new Spotify(keys.spotify);
 
 		if (!details){
-        	details = 'Rap God';
+        	details = 'The Sign';
     	}
 		spotify.search({ type: 'track', query: details }, function(err, data) {
 			if (err){
-	            console.log('Error occurred: ' + err);
+	            console.log(err);
 	            return;
 	        }
 
@@ -52,9 +77,9 @@ function spotify(details) {
 
 function movie(details) {
 
-	var queryUrl = "http://www.omdbapi.com/?t=" + details + "&y=&plot=short&apikey=2462eb04";
+	var movieUrl = "http://www.omdbapi.com/?t=" + details + "&y=&plot=short&apikey=2462eb04";
 
-	request(queryUrl, function(error, response, body) {
+	request(movieUrl, function(error, response, body) {
 		if (!details){
         	details = 'Mr Nobody';
     	}
